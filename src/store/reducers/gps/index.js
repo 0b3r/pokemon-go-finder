@@ -1,23 +1,32 @@
 import { combineReducers } from 'redux';
-import location from '../location';
 import C from '../../../constants';
 import reducer from '../utils';
 
+const initalState = {}
 
-const headingReducers = {
-  [C.SET_GPS] : (state, {payload:{heading}}) => heading
+const reducers = {
+  [C.SET_GPS] : (state, {payload:{
+    accuracy,
+    altitude,
+    altitudeAccuracy,
+    heading,
+    lat,
+    long,
+    speed
+  }}) => (
+  Object.assign({}, 
+    {
+      accuracy,
+      altitude,
+      altitudeAccuracy,
+      heading,
+      lat,
+      long,
+      speed
+    }
+  ))
 };
 
-const altitudeReducers = {
-  [C.SET_GPS] : (state, {payload:{altitude}}) => altitude
-};
-
-const heading = (state = '', action) => reducer(state, action, headingReducers);
-const altitude = (state = '', action) => reducer(state, action, altitudeReducers);
-
-
-export default combineReducers({
-  location,
-  heading,
-  altitude
-})
+export default (state = initalState, action) => (
+  reducer(state, action, reducers)
+);

@@ -1,9 +1,14 @@
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
+import configureStore from './store';
+import createRoot from './components/Root'
 
+
+const store = configureStore();
+const Root = createRoot(React);
 
 render(
-  <h1>Pokemon GoDex</h1>,
+  <Root store={store} />,
   document.getElementById('root')
 );

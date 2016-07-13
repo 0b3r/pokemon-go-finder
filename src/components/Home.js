@@ -1,0 +1,1 @@
+export default React => () => (<h1>POKEMON GODEX HOME PAGE</h1>);

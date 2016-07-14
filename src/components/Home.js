@@ -1,17 +1,26 @@
-import createMap from './Map';
+import { connect } from 'react-redux';
+import createMap from './Map/Map';
 
 export default React => {
 
   const Map = createMap(React);
 
-  const Home = () => {
+  const Home = ({ gps }) => {
 
     return (
       <div className="home-map-container">
-        <Map />
+        <Map {...gps} />
       </div>
     );
   }
 
-  return Home;
+  const mapStateToProps = ({ gps }, rest) => {
+    return {
+      gps
+    }
+  }
+
+  return connect(
+    mapStateToProps,
+  )(Home);
 } 

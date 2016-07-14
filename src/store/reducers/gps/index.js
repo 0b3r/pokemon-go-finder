@@ -2,7 +2,9 @@ import { combineReducers } from 'redux';
 import C from '../../../constants';
 import reducer from '../utils';
 
-const initalState = {}
+const initalState = {
+  init: false
+};
 
 const reducers = {
   [C.SET_GPS] : (state, {payload:{
@@ -22,7 +24,8 @@ const reducers = {
       heading,
       lat,
       long,
-      speed
+      speed,
+      init: true
     }
   ))
 };

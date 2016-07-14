@@ -3,6 +3,47 @@ import createPlayerMarker from './Markers/PlayerMarker';
 import createPokemonMarker from './Markers/PokemonMarker';
 import createMapControls from './Controls';
 
+const options = {
+  styles: [
+  {
+    "featureType": "road",
+    "elementType": "geometry.fill",
+    "stylers": [
+      { "visibility": "on" },
+      { "color": "#166b19" }
+    ]
+  },{
+    "featureType": "road",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      { "visibility": "on" },
+      { "color": "#ffff33" },
+      { "weight": 5.2 },
+      { "saturation": -16 }
+    ]
+  },{
+    "featureType": "landscape.man_made",
+    "elementType": "geometry.fill",
+    "stylers": [
+      { "invert_lightness": true },
+      { "color": "#a0f096" },
+      { "hue": "#22ff00" },
+      { "saturation": 4 },
+      { "gamma": 0.62 },
+      { "visibility": "on" }
+    ]
+  },{
+    "featureType": "landscape.man_made",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      { "visibility": "on" },
+      { "weight": 1.9 },
+      { "color": "#109910" }
+    ]
+  }
+]
+}
+
 export default React => {
 
   const PlayerMarker = createPlayerMarker(React);
@@ -19,6 +60,10 @@ export default React => {
 
     const goToPlayer = () => {
       centerPlayer(lat, long);
+    };
+
+    const addLocation = () => {
+      console.log('NEW LOCATION');
     };
 
     const Pokemon = pokedex && pokedex.map( ({id, long, ...data}) => (
@@ -41,7 +86,7 @@ export default React => {
           <PlayerMarker lat={lat} lng={long} />
           {Pokemon}
         </GoogleMap>
-        <MapControls goToPlayer={goToPlayer}/>
+        <MapControls goToPlayer={goToPlayer} addLocation={addLocation}/>
       </div>
     );
   };

@@ -9,8 +9,7 @@ const dispatchSetGPS = (dispatch) => {
   }
 };
 
-export const watchGPS = (dispatch) => {
+export const listenToGPS = (dispatch) => {
   dispatchSetGPS(dispatch);
   setInterval(() => dispatchSetGPS(dispatch), C.GPS_REFRESH_RATE);
 }
-

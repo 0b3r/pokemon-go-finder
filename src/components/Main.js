@@ -1,11 +1,20 @@
-export default React => ({ children }) => (
-  <div className="main-container">
-    <nav className="navbar navbar-default" role="navigation">
-      MENU
-    </nav>
-    <div className="container route-container">
-      { children }
+import createAuth from './Auth';
+
+export default React => {
+
+  const Auth = createAuth(React);
+  
+  const Main = ({ children }) => (
+    <div className="main-container">
+      <nav className="navbar navbar-default main-nav" role="navigation">
+        <Auth />
+      </nav>
+      <div className="container route-container">
+        { children }
+      </div>
     </div>
-  </div>
-);
+  );
+
+  return Main; 
+};
 

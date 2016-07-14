@@ -3,7 +3,8 @@ import C from '../../../constants';
 import reducer from '../utils';
 
 const initalState = {
-  init: false
+  init: false,
+  defaultZoom: C.GOOGLE_MAPS_DEFAULT_ZOOM
 };
 
 const reducers = {
@@ -16,7 +17,7 @@ const reducers = {
     long,
     speed
   }}) => (
-  Object.assign({}, 
+  Object.assign({}, state,
     {
       accuracy,
       altitude,

@@ -3,7 +3,7 @@ export default React => ({ children }) => (
     <nav className="navbar navbar-default" role="navigation">
       MENU
     </nav>
-    <div className="container">
+    <div className="container route-container">
       { children }
     </div>
   </div>

@@ -1,7 +1,17 @@
 import C from '../../../constants';
 import reducer from '../utils';
+import v4 from 'node-uuid';
 
-const initialState = [];
+const initialState = [
+{
+  id: v4(),
+  name: 'Pigey',
+  type: 'Flying',
+  level: 0,
+  lat: 49.6759288,
+  long: -112.796530
+}
+];
 
 const reducers = {
   [C.ADD_TO_POKEDEX] : (

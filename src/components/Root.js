@@ -1,6 +1,8 @@
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+
+import C from '../constants';
 import createMain from './Main';
 import createHome from './Home';
 
@@ -17,7 +19,7 @@ export default React => {
     return (
       <Provider store={store}>
          <Router history={history}>
-           <Route path="/" component={ Main }>
+           <Route path={C.ROOT_PATH} component={ Main }>
              <IndexRoute component={ Home } /> 
            </Route>
          </Router>

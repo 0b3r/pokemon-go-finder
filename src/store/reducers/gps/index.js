@@ -1,23 +1,36 @@
 import { combineReducers } from 'redux';
-import location from '../location';
 import C from '../../../constants';
 import reducer from '../utils';
 
-
-const headingReducers = {
-  [C.SET_GPS] : (state, {payload:{heading}}) => heading
+const initalState = {
+  init: false,
+  defaultZoom: C.GOOGLE_MAPS_DEFAULT_ZOOM
 };
 
-const altitudeReducers = {
-  [C.SET_GPS] : (state, {payload:{altitude}}) => altitude
+const reducers = {
+  [C.SET_GPS] : (state, {payload:{
+    accuracy,
+    altitude,
+    altitudeAccuracy,
+    heading,
+    lat,
+    long,
+    speed
+  }}) => (
+  Object.assign({}, state,
+    {
+      accuracy,
+      altitude,
+      altitudeAccuracy,
+      heading,
+      lat,
+      long,
+      speed,
+      init: true
+    }
+  ))
 };
 
-const heading = (state = '', action) => reducer(state, action, headingReducers);
-const altitude = (state = '', action) => reducer(state, action, altitudeReducers);
-
-
-export default combineReducers({
-  location,
-  heading,
-  altitude
-})
+export default (state = initalState, action) => (
+  reducer(state, action, reducers)
+);

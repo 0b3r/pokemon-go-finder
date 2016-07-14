@@ -1,13 +1,21 @@
+import path from './path';
+import map from './map';
 import gps from './gps';
-import location from './location';
 import pokedex from './pokedex';
 import gymdex from './gymdex';
 import stopdex from './stopdex';
+import firebase from './firebase';
+import auth from './auth';
+import feedback from './feedback'
 
 export default Object.assign({},
+  path,
+  map,
   gps,
-  location,
   pokedex,
   gymdex,
-  stopdex
+  stopdex,
+  firebase,
+  auth,
+  feedback
 );

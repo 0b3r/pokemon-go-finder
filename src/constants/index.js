@@ -6,7 +6,8 @@ import gymdex from './gymdex';
 import stopdex from './stopdex';
 import firebase from './firebase';
 import auth from './auth';
-import feedback from './feedback'
+import feedback from './feedback';
+import addLocation from './addLocation'
 
 export default Object.assign({},
   path,
@@ -17,5 +18,6 @@ export default Object.assign({},
   stopdex,
   firebase,
   auth,
-  feedback
+  feedback,
+  addLocation
 );

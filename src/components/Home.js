@@ -1,14 +1,15 @@
 import { connect } from 'react-redux';
 import createMap from './Map/Map';
+import createAddOverlay from './AddOverlay/';
 import * as actions from '../actions';
 
 
 export default React => {
 
   const Map = createMap(React);
-  
+  const AddOverlay = createAddOverlay(React);
 
-  const Home = ({ gps, map, pokedex, setMapCenter, setMap}) => {
+  const Home = ({ gps, map, pokedex, setMapCenter, setMap, addLocation, toggleAddLocation}) => {
 
     return (
       <div className="home-map-container">
@@ -16,16 +17,19 @@ export default React => {
           pokedex={pokedex}
           centerPlayer={setMapCenter} 
           setMap={setMap}
+          toggleAddLocation={toggleAddLocation}
         />
+        {addLocation.active ? <AddOverlay toggleAddLocation={toggleAddLocation} /> : null}
       </div>
     );
   }
 
-  const mapStateToProps = ({ gps, map, pokedex}, rest) => {
+  const mapStateToProps = ({ gps, map, pokedex, addLocation}) => {
     return {
       gps,
       map,
-      pokedex
+      pokedex,
+      addLocation
     };
   }
 

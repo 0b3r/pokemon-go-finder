@@ -7,6 +7,7 @@ import * as actions from './actions';
 import configureStore from './store';
 import createRoot from './components/Root';
 import './assets/index.css';
+import './assets/pokemon.css';
 
 
 const store = configureStore();

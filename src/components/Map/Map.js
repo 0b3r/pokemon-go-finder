@@ -50,7 +50,7 @@ export default React => {
   const PokemonMarker = createPokemonMarker(React);
   const MapControls = createMapControls(React);
 
-  const Map = ({ lat, long, init, defaultZoom, pokedex, centerPlayer, setMap}) => {
+  const Map = ({ lat, long, init, defaultZoom, pokedex, centerPlayer, setMap, toggleAddLocation}) => {
 
     
 
@@ -63,7 +63,7 @@ export default React => {
     };
 
     const addLocation = () => {
-      console.log('NEW LOCATION');
+      toggleAddLocation();
     };
 
     const Pokemon = pokedex && pokedex.map( ({id, long, ...data}) => (

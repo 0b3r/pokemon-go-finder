@@ -8,8 +8,7 @@ import gymdex from './gymdex';
 import stopdex from './stopdex';
 import map from './map';
 import feedback from './feedback';
-
-
+import addLocation from './addLocation';
 
 export default combineReducers({
   auth,
@@ -19,5 +18,6 @@ export default combineReducers({
   gymdex,
   stopdex,
   feedback,
+  addLocation,
   routing: routerReducer
 });

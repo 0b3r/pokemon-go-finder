@@ -5,7 +5,7 @@ html, body, #root, .main-container, .container, .home-map-container {
 .main-nav{
   position: absolute;
   top: 0;
-  z-index: 255;
+  z-index: 100;
 }
 
 .route-container{
@@ -22,3 +22,80 @@ html, body, #root, .main-container, .container, .home-map-container {
   right: 0;
   width: 100%;
 }
+
+.container{
+  margin: 0;
+  padding: 0;
+}
+
+.add-overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 255;
+}
+.add-overlay-modal{
+  position: absolute;
+  background: #CCC;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .85;
+}
+.add-overlay-wrapper{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+.professor-willow{
+  width: 250px;
+  height: 450px;
+  position: absolute;
+  top: 25%;
+  right: 0;
+}
+
+.add-location-wrapper{
+  width: 620px;
+  height: auto;
+  position: absolute;
+  top: 15%;
+  right: 300px;
+  background: #ededed;
+  padding: 10px;
+  font-size: 18px;
+}
+.add-stage-2-pokemon-list{
+  height: 500px;
+  overflow: auto;
+}
+
+.pokemon {
+  margin: 0;
+  padding: 0;
+  width: 120px;
+  height: 120px;
+  float: left;
+  box-sizing: border-box;
+}
+
+.pokemon:hover {
+  border: 3px solid green;
+}
+
+
+
+
+
+
+
+
+
+

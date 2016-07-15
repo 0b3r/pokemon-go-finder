@@ -40,7 +40,6 @@ export const setGPS = ({
 });
 
 export const setMapCenter = (lat, long) => (dispatch, getState) => {
-
   const {map:{map:{map}}} = getState();
   map.setCenter(new google.maps.LatLng(lat, long));
   map.setZoom(C.GOOGLE_MAPS_DEFAULT_ZOOM);
@@ -131,3 +130,44 @@ export const logoutUser = () => {
     });
   };
 };
+
+export const toggleAddLocation = () => ({type:C.ADD_LOCATION_TOGGLE});
+export const resetLocationAdd = () => ({type:C.ADD_LOCATION_RESET});
+
+export const initAddition = (addType) => ({
+  type: C.INITIALIZE_ADD,
+  payload: { addType }
+});
+
+export const pokemonToAdd = (pokemon) => ({
+  type: C.ADD_POKEMON,
+  payload: { pokemon }
+});
+
+export const gymToAdd = (gym) => ({
+  type: C.ADD_GYM,
+  payload: { gym }
+});
+
+export const pokestopToAdd = (pokestop) => ({
+  type: C.ADD_POKESTOP,
+  payload: { pokestop }
+});
+
+export const setAddLocation = (lat, long) => ({
+  type: C.ADD_LOCATION_LATLNG,
+  payload: { lat, long }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+

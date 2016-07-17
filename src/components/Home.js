@@ -9,7 +9,11 @@ export default React => {
   const Map = createMap(React);
   const AddOverlay = createAddOverlay(React);
 
-  const Home = ({ gps, map, pokedex, setMapCenter, setMap, addLocation, toggleAddLocation}) => {
+  const Home = ({ 
+    gps, map, pokedex, photoURL, setMapCenter, 
+    setMap, addLocation, openAddLocation, closeAddLocation, setAddLocation,
+    setAddLocationState, setAddLocationSubmit
+  }) => {
 
     return (
       <div className="home-map-container">
@@ -17,19 +21,30 @@ export default React => {
           pokedex={pokedex}
           centerPlayer={setMapCenter} 
           setMap={setMap}
-          toggleAddLocation={toggleAddLocation}
+          openAddLocation={openAddLocation}
+          playerIcon={photoURL}
+          addLocation={addLocation}
+          setAddLocation={setAddLocation}
+          setAddLocationState={setAddLocationState}
+          setAddLocationSubmit={setAddLocationSubmit}
         />
-        {addLocation.active ? <AddOverlay toggleAddLocation={toggleAddLocation} /> : null}
+        <AddOverlay 
+          active={addLocation.active}
+          addLocationState={addLocation.addState} 
+          closeAddLocation={closeAddLocation}/>
       </div>
     );
   }
 
-  const mapStateToProps = ({ gps, map, pokedex, addLocation}) => {
+  const mapStateToProps = ({ 
+    gps, map, pokedex, addLocation, auth:{user:{photoURL}}}
+  ) => {
     return {
       gps,
       map,
       pokedex,
-      addLocation
+      addLocation, 
+      photoURL
     };
   }
 

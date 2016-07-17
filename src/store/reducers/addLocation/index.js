@@ -1,25 +1,34 @@
 import C from '../../../constants';
 import reducer from '../utils';
 
+// const initialState = {
+//   active: true,
+//   addState: 'ADD_LOCATION_TO_MAP',
+//   pokemon: {
+//     index: 5
+//   },
+//   lat: null,
+//   long: null
+// };
+
 const initialState = {
-  active: true,
-  addType: null,
-  pokemon: null,
-  gym: null,
-  pokestop: null,
-  lat: null,
-  long: null
+  active: false,
 };
 
 const reducers = {
-  [C.ADD_LOCATION_TOGGLE]: ({active}) => (
-    Object.assign({}, state, {active: !active})
+  [C.ADD_LOCATION_OPEN]: (state, {payload}) => (
+    //payload contains addState
+    Object.assign({}, state, {active: !state.active, ...payload})
   ),
-  [C.INITIALIZE_ADD]: (state, {payload:{addType}}) => (
-    Object.assign({}, state, {addType})
+  [C.ADD_LOCATION_CLOSE]: (state) => ({
+    active: false
+  }),
+  [C.UPDATE_ADD_LOCATION_STATE]: (state, {payload}) => (
+    //payload contains addState
+    Object.assign({}, state, {...payload})
   ),
   [C.ADD_POKEMON]: (state, {payload:{pokemon}}) => (
-    Object.assign({}, state, {addType})
+    Object.assign({}, state, {pokemon})
   ),
   [C.ADD_GYM]: (state, {payload:{gym}}) => (
     Object.assign({}, state, {gym})
@@ -29,16 +38,8 @@ const reducers = {
   ),
   [C.ADD_LOCATION_LATLNG]: (state, {payload:{lat, long}}) => (
     Object.assign({}, state, {lat, long})
-  ),
-  [C.ADD_LOCATION_RESET]: (state) => ({
-    active: true,
-    addType: null,
-    pokemon: null,
-    gym: null,
-    pokestop: null,
-    lat: null,
-    long: null
-  }),
+  )
+  
 
 };
 

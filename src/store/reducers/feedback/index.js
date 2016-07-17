@@ -14,7 +14,7 @@ const reducers = {
       error: true 
     })
   ),
-  [C.FEEDBACK_DISPLAY_MESSAGE]: (state, {payload:{message}}) => ( 
+  [C.FEEDBACK_DISPLAY_MESSAGE]: (state, {payload:{message, code}}) => ( 
     state.concat({ 
       message, 
       code, 

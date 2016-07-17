@@ -1,12 +1,22 @@
+import creatPokemon from '../Pokemon';
+
 export default React => { 
 
-  const PokemonConfirm = () => (
+  const Pokemon = creatPokemon(React);
+
+  const PokemonConfirm = ({index, repickAction, continueAction}) => (
     <div className="add-stage-4">
-      <span>Where did you find it?</span>
+      <span>Is this the one?</span>
       <div>
-        <button className="btn btn-success">Here!</button>
-        <span>OR</span>
-        <button className="btn btn-warning">Drop a Pin</button>
+        <Pokemon index={index} />
+      </div>
+      <div>
+        <button className="btn btn-success" onClick={continueAction}>
+          Yes! That's it!
+        </button>
+        <button className="btn btn-warn" onClick={repickAction}>
+          No. Let me look again.
+        </button>
       </div>
     </div>
   );

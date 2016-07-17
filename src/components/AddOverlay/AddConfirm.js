@@ -1,6 +1,6 @@
 export default React => { 
 
-  const AddConfirm = () => (
+  const AddConfirm = ({close}) => (
     <div className="add-stage-4">
       <span>
         Awesome I'll add the sighting to my record!  
@@ -13,7 +13,7 @@ export default React => {
         <button className="btn btn-default">Twitter</button>
       </div>
       <div>
-        <button className="btn btn-success">Close</button>
+        <button className="btn btn-success" onClick={close}>Close</button>
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
 import C from '../constants';
 import firebase from 'firebase';
+import GeoFire from 'geofire';
+import pokedex from '../services/pokedexMap';
 
 const firebaseConfig = {
   apiKey: C.FIREBASE_API_KEY,
@@ -9,6 +11,13 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+const pokemonRef = database.ref('pokemon');
+const locationsRef = database.ref('locations');
+const locationInfoRef = database.ref('locationInfo');
+const locationsGeo = new GeoFire(locationsRef);
+
+let geoQuery;
 
 const providers = {
   [C.AUTH_FACEBOOK_PROVIDER]: () => new firebase.auth.FacebookAuthProvider(),
@@ -16,7 +25,87 @@ const providers = {
   [C.AUTH_TWITTER_PROVIDER]: () => new firebase.auth.TwitterAuthProvider(),
 };
 
-const database = firebase.database();
+
+
+export const getPokemon = () => (dispatch) => {
+  database.ref('pokemon').once('value').then(function(snapshot) {
+    dispatch({ 
+      type: C.SET_POKEMON, 
+      payload: {
+        pokemon: snapshot.val() 
+      }
+    });
+  });
+};
+
+export const initGeoRadius = (radius, lat, long) => {
+  geoQuery = locationsGeo.query({
+    center: [lat,long],
+    radius
+  });
+
+  geoQuery.on("key_entered", function(id, [lat, long]) {
+    const item = {
+      id,
+      lat,
+      long
+    }
+    // pokemonLocationsRef.child(key).on('value', function(plSnapshot){
+    //   const { id } = plSnapshot.val();
+    //   pokemonRef.child(id).on('value', function(pSnapshot){
+    //     console.log(pSnapshot.val());
+    //   });
+    // });
+    console.log(item);
+
+  });
+};
+
+export const updateGeoRadius = (radius, lat, long) => {
+  geoQuery.updateCriteria({
+    center: [lat,long],
+    radius
+  });
+};
+
+
+export const saveLocation = (type, lat, long, id = null) => {
+
+  const locationKey = locationsRef.push().key;
+  locationsGeo.set(locationKey, [lat, long]).then(
+    () => {
+      locationInfoRef.child(locationKey).set({
+        id,
+        type
+      });
+    }, 
+    (error) => {}
+  );
+
+}
+
+
+// export const testFirebaseDB = () => {
+
+//   pokedex.forEach((p,i) => {
+//     // console.log(i, p);
+
+//     const pokemonData = {
+//       index: i,
+//       name: p.name,
+//       type: {}
+//     };
+
+//     p.type.forEach((t, v) => {
+//       pokemonData.type[t.toLowerCase()] = true;
+//     });
+
+//     const newPokeKey = firebase.database().ref().child('pokemon').push().key;
+
+//     firebase.database().ref('pokemon/' + newPokeKey).set(pokemonData);
+//   });
+  
+// }
 
 export const setGPS = ({ 
   accuracy, 
@@ -131,18 +220,43 @@ export const logoutUser = () => {
   };
 };
 
-export const toggleAddLocation = () => ({type:C.ADD_LOCATION_TOGGLE});
-export const resetLocationAdd = () => ({type:C.ADD_LOCATION_RESET});
+export const openAddLocation = () => (
+  {
+    type:C.ADD_LOCATION_OPEN,
+    payload: {
+      addState: C.ADD_LOCATION_START
+    }
+  }
+);
+export const closeAddLocation = () => (
+  {
+    type:C.ADD_LOCATION_CLOSE,
+    payload: {
+      addState: C.ADD_LOCATION_START
+    }
+  }
+);
 
-export const initAddition = (addType) => ({
-  type: C.INITIALIZE_ADD,
-  payload: { addType }
+export const setAddLocationState = (addState) => ({
+  type: C.UPDATE_ADD_LOCATION_STATE,
+  payload: { addState }
 });
 
-export const pokemonToAdd = (pokemon) => ({
-  type: C.ADD_POKEMON,
-  payload: { pokemon }
-});
+export const setAddLocationSubmit = () => (dispatch) => {
+
+  dispatch({
+    type: C.UPDATE_ADD_LOCATION_STATE,
+    payload: { addState: C.ADD_LOCATION_SUBMIT }
+  });
+}
+
+export const pokemonToAdd = (addState, pokemon) => (dispatch) => {
+  dispatch(setAddLocationState(addState));
+  dispatch({
+    type: C.ADD_POKEMON,
+    payload: { pokemon }
+  });
+};
 
 export const gymToAdd = (gym) => ({
   type: C.ADD_GYM,

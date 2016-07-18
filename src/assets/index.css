@@ -1,0 +1,131 @@
+html, body, #root, .main-container, .container, .home-map-container {
+  width: 100%;
+  height: 100%;
+}
+.main-nav{
+  position: absolute;
+  top: 0;
+  z-index: 100;
+}
+
+.route-container{
+  position: absolute;
+  top: 0;
+}
+
+.home-map-container {
+  position: relative;
+}
+.map-controls{
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  width: 100%;
+}
+
+.container{
+  margin: 0;
+  padding: 0;
+}
+
+.add-overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 255;
+}
+.add-overlay-modal{
+  position: absolute;
+  background: #CCC;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .85;
+}
+.add-overlay-wrapper{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+.professor-willow{
+  width: 250px;
+  height: 450px;
+  position: absolute;
+  top: 25%;
+  right: 0;
+}
+
+.add-location-wrapper{
+  width: 620px;
+  height: auto;
+  position: absolute;
+  top: 15%;
+  right: 300px;
+  background: #ededed;
+  padding: 10px;
+  font-size: 18px;
+}
+.add-stage-2-pokemon-list{
+  height: 500px;
+  overflow: auto;
+}
+
+.pokemon {
+  margin: 0;
+  padding: 0;
+  float: left;
+  box-sizing: border-box;
+}
+
+.pokemon:hover {
+  border: 3px solid green;
+}
+
+.addLocationBubble {
+  position:relative;
+  padding: 5px;
+  width: 100px;
+  border:5px solid #2e6da4;
+  background:#fff;
+  border-radius:10px;
+}
+.addLocationBubble:before {
+  content:"";
+  position:absolute;
+  bottom:-52px;
+  left:0px; 
+  border-width:50px 46px 0;
+  border-style:solid;
+  border-color:#2e6da4 transparent;
+  display:block;
+  width:0;
+}
+/*
+.addLocationBubble:after {
+  content:"";
+  position:absolute;
+  bottom:-44px;
+  left:10px;
+  border-width:45px 36px 0;
+  border-style:solid;
+  border-color:#fff transparent;
+  display:block;
+  width:0;
+}*/
+
+
+
+
+
+
+
+
+
+

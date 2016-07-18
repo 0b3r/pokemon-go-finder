@@ -1,17 +1,22 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
+import auth from './auth';
 import gps from './gps';
-import pokedex from './pokedex';
-import gymdex from './gymdex';
-import stopdex from './stopdex';
+import map from './map';
+import feedback from './feedback';
+import addLocation from './addLocation';
+import locationsInRange from './locationsInRange'
 
-
+import pokemon from './pokemon';
 
 export default combineReducers({
+  auth,
   gps,
-  pokedex,
-  gymdex,
-  stopdex,
+  map,
+  feedback,
+  addLocation,
+  pokemon,
+  locationsInRange,
   routing: routerReducer
 });

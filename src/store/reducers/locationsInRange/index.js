@@ -13,27 +13,12 @@ import reducer from '../utils';
 // }
 // ];
 
-const initialState = [];
+const initialState = {};
 
 const reducers = {
-  [C.ADD_TO_POKEDEX] : (
-    state,{payload:{id, index, name, type, lat, long, level}}
-  ) => (
-    [{id, index, name, type, level, lat, long}, ...state]
-  ),
-  [C.EDIT_POKEDEX] : (
-    state, {payload:{id, index, name, type, lat, long, level}}
-  ) => (
-    state.map(p => (
-      p.id === id ? 
-      Object.assign({}, p, {name, index, type, level, lat, long}) : 
-      p
-    ))
-  ),
-  [C.DELETE_FROM_POKEDEX] : (state, {payload:{id}}) => (
-    state.filter(p => p.id !== id)
-  ),
-  [C.SET_POKEDEX] : (state, {payload:{pokedex}}) => pokedex.concat(),
+  [C.ADD_IN_RANGE] : (state,{payload}) => (
+    Object.assign({}, state, {...payload})
+  )
 };
 
 export default (state = initialState, action) => reducer(state, action, reducers);

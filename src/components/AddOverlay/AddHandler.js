@@ -17,8 +17,8 @@ export default React => {
 
   const AddHandler = ({
     addState, setAddLocationState, pokemonToAdd,
-    pokemon, gym, pokestop, pokemonDB,
-    initAddition, gymToAdd, pokestopToAdd, closeAddLocation, setAddLocation,
+    pokemon, gym, pokestop, pokemonDB, gymToAdd,
+    initAddition, pokestopToAdd, closeAddLocation, setAddLocation,
     playerLat, playerLong, setAddLocationSubmit
   }) => {
 
@@ -54,6 +54,22 @@ export default React => {
         dropPinAction={() => setAddLocationState(C.ADD_LOCATION_TO_MAP)}/>
     );
 
+    const handleAddGym = () => {
+      //
+      return (
+        <AddHow 
+          hereAction={() => {
+            gymToAdd(true);
+            setAddLocation(playerLat, playerLong);
+            setAddLocationSubmit();
+          }} 
+          dropPinAction={() => {
+            gymToAdd(true);
+            setAddLocationState(C.ADD_LOCATION_TO_MAP)
+          }}/>
+      );
+    };
+
     const handleLocationSubmit = () => (
       <AddConfirm close={() => closeAddLocation()}/>
     );
@@ -62,7 +78,7 @@ export default React => {
       [C.ADD_LOCATION_START]: handleIntro(),
       [C.ADD_LOCATION_POKEMON_SELECT]: handlePokemonSelect(),
       [C.ADD_LOCATION_POKEMON_CONFIRM]: handlePokemonConfirm(),
-      [C.ADD_LOCATION_GYM]: handleLocationHow(),
+      [C.ADD_LOCATION_GYM]: handleAddGym(),
       [C.ADD_LOCATION_POKESTOP]: handleLocationHow(),
       [C.ADD_LOCATION_HOW]: handleLocationHow(),
       [C.ADD_LOCATION_SUBMIT]: handleLocationSubmit(),

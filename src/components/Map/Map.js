@@ -2,59 +2,22 @@ import GoogleMap from 'google-map-react';
 import createPlayerMarker from './Markers/PlayerMarker';
 import createPokemonMarker from './Markers/PokemonMarker';
 import createAddPokemonMarker from './Markers/AddPokemonMarker';
+import createAddGymMarker from './Markers/AddGymMarker';
+import createGymMarker from './Markers/GymMarker';
 import createMapControls from './Controls';
 import C from '../../constants';
-
-const options = {
-  styles: [
-  {
-    "featureType": "road",
-    "elementType": "geometry.fill",
-    "stylers": [
-      { "visibility": "on" },
-      { "color": "#166b19" }
-    ]
-  },{
-    "featureType": "road",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      { "visibility": "on" },
-      { "color": "#ffff33" },
-      { "weight": 5.2 },
-      { "saturation": -16 }
-    ]
-  },{
-    "featureType": "landscape.man_made",
-    "elementType": "geometry.fill",
-    "stylers": [
-      { "invert_lightness": true },
-      { "color": "#a0f096" },
-      { "hue": "#22ff00" },
-      { "saturation": 4 },
-      { "gamma": 0.62 },
-      { "visibility": "on" }
-    ]
-  },{
-    "featureType": "landscape.man_made",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      { "visibility": "on" },
-      { "weight": 1.9 },
-      { "color": "#109910" }
-    ]
-  }
-]
-}
 
 export default React => {
 
   const PlayerMarker = createPlayerMarker(React);
   const PokemonMarker = createPokemonMarker(React);
+  const GymMarker = createGymMarker(React);
   const AddPokemonMarker = createAddPokemonMarker(React);
+  const AddGymMarker = createAddGymMarker(React);
   const MapControls = createMapControls(React);
 
   const Map = ({ 
-    lat, long, init, playerIcon, defaultZoom, pokedex, 
+    lat, long, init, playerIcon, defaultZoom, locationsInRange, pokemonDB,
     centerPlayer, setMap, openAddLocation, addLocation, setAddLocation,
     setAddLocationState, setAddLocationSubmit
   }) => {
@@ -65,26 +28,52 @@ export default React => {
       return <h3>Loading....</h3>
     }
 
-    // const Pokemon = pokedex && pokedex.map( ({id, long, ...data}) => (
-    //   <PokemonMarker 
-    //     key={id}
-    //     lng={long}
-    //     {...data}
-    //   />
-    // ));
+    const Pokemon = Object.keys(locationsInRange).map((key) => {
+      const {type, lat, long, id} = locationsInRange[key];
+      if(type === C.TYPEOF_POKEMON){
+        const {index} = pokemonDB[id];
+        return (
+          <PokemonMarker 
+            key={key}
+            lng={long}
+            lat={lat}
+            index={index}
+          />
+        );
+      } else if(type === C.TYPEOF_GYM){
+        return (
+          <GymMarker 
+            key={key}
+            lng={long}
+            lat={lat}
+          />
+        );
+      } else {
+        return [];
+      }
 
+    });
 
     const AddPokemonGymStop = () => {
       if(addLocation.addState === C.ADD_LOCATION_TO_MAP){
         if(addLocation.lat && addLocation.long){
-          return (
-            <AddPokemonMarker 
-              lat={addLocation.lat} 
-              lng={addLocation.long} 
-              index={addLocation.pokemon.index}
-              save={() => setAddLocationSubmit()}
-              />
-          );
+          if(addLocation.pokemon){
+            return (
+              <AddPokemonMarker 
+                lat={addLocation.lat} 
+                lng={addLocation.long} 
+                index={addLocation.pokemon.index}
+                save={() => setAddLocationSubmit()}
+                />
+            );
+          } else if(addLocation.gym){
+            return (
+              <AddGymMarker 
+                lat={addLocation.lat} 
+                lng={addLocation.long}
+                save={() => setAddLocationSubmit()}/>
+            );
+          }
         }
         return [];
       }
@@ -94,7 +83,7 @@ export default React => {
       // Stop propogation (Find better way) e.stopPropagation not working
       if(event.target.tagName !== 'BUTTON'){ 
         if(addLocation.addState === C.ADD_LOCATION_TO_MAP){
-          if(addLocation.pokemon){
+          if(addLocation.pokemon || addLocation.gym){
             setAddLocation(lat, lng);
           }
         }
@@ -111,12 +100,13 @@ export default React => {
           yesIWantToUseGoogleMapApiInternals
           onClick={addLocationMarker}
         >
-          <PlayerMarker playerIcon={playerIcon} lat={lat} lng={long} />
+          
           {
             addLocation.addState !== C.ADD_LOCATION_TO_MAP ? 
-            [] : 
+            Pokemon : 
             AddPokemonGymStop()
           }
+          <PlayerMarker playerIcon={playerIcon} lat={lat} lng={long} />
         </GoogleMap>
         <MapControls 
           addLocationState={addLocation.addState} 

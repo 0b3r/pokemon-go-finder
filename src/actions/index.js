@@ -38,26 +38,19 @@ export const getPokemon = () => (dispatch) => {
   });
 };
 
-export const initGeoRadius = (radius, lat, long) => {
+export const initGeoRadius = (radius, lat, long) => (dispatch) => {
   geoQuery = locationsGeo.query({
     center: [lat,long],
     radius
   });
 
-  geoQuery.on("key_entered", function(id, [lat, long]) {
-    const item = {
-      id,
-      lat,
-      long
-    }
-    // pokemonLocationsRef.child(key).on('value', function(plSnapshot){
-    //   const { id } = plSnapshot.val();
-    //   pokemonRef.child(id).on('value', function(pSnapshot){
-    //     console.log(pSnapshot.val());
-    //   });
-    // });
-    console.log(item);
-
+  geoQuery.on("key_entered", function(key, [lat, long]) {
+    locationInfoRef.child(key).on('value', function(snapshot){
+      const item = {
+        [key]: Object.assign({}, {lat, long}, snapshot.val())
+      };
+      dispatch({type:C.ADD_IN_RANGE, payload: item});
+    });
   });
 };
 
@@ -69,17 +62,20 @@ export const updateGeoRadius = (radius, lat, long) => {
 };
 
 
-export const saveLocation = (type, lat, long, id = null) => {
+export const saveLocation = (type, uid, lat, long, id = null) => {
 
   const locationKey = locationsRef.push().key;
   locationsGeo.set(locationKey, [lat, long]).then(
     () => {
       locationInfoRef.child(locationKey).set({
         id,
-        type
+        type,
+        uid
       });
     }, 
-    (error) => {}
+    (error) => {
+      console.log(error);
+    }
   );
 
 }
@@ -169,6 +165,7 @@ export const listenToAuth = () => (dispatch, getState) => {
 export const openAuth = (platform) => {
   const createProvider = providers[platform];
   const provider = createProvider();
+  provider.addScope('email');
   return (dispatch) => {
     dispatch({ type: C.AUTH_OPEN });
     firebase.auth().signInWithPopup(provider).then(
@@ -242,7 +239,17 @@ export const setAddLocationState = (addState) => ({
   payload: { addState }
 });
 
-export const setAddLocationSubmit = () => (dispatch) => {
+export const setAddLocationSubmit = () => (dispatch, getState) => {
+
+  const {lat, long, ...state} = getState().addLocation;
+  const {user} = getState().auth;
+
+  if(state.pokemon){
+    saveLocation(C.TYPEOF_POKEMON, user.uid, lat, long, state.pokemon.id);
+  } 
+  else if(state.gym){
+    saveLocation(C.TYPEOF_GYM, user.uid, lat, long);
+  }
 
   dispatch({
     type: C.UPDATE_ADD_LOCATION_STATE,

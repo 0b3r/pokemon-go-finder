@@ -10,7 +10,7 @@ export default React => {
   const AddOverlay = createAddOverlay(React);
 
   const Home = ({ 
-    gps, map, pokedex, photoURL, setMapCenter, 
+    gps, map, locationsInRange, pokemonDB, photoURL, setMapCenter, 
     setMap, addLocation, openAddLocation, closeAddLocation, setAddLocation,
     setAddLocationState, setAddLocationSubmit
   }) => {
@@ -18,7 +18,8 @@ export default React => {
     return (
       <div className="home-map-container">
         <Map {...gps} {...map} 
-          pokedex={pokedex}
+          locationsInRange={locationsInRange}
+          pokemonDB={pokemonDB}
           centerPlayer={setMapCenter} 
           setMap={setMap}
           openAddLocation={openAddLocation}
@@ -37,14 +38,15 @@ export default React => {
   }
 
   const mapStateToProps = ({ 
-    gps, map, pokedex, addLocation, auth:{user:{photoURL}}}
+    gps, map, pokemon, locationsInRange, addLocation, auth:{user:{photoURL}}}
   ) => {
     return {
       gps,
       map,
-      pokedex,
       addLocation, 
-      photoURL
+      photoURL,
+      locationsInRange, 
+      pokemonDB: pokemon
     };
   }
 

@@ -7,7 +7,7 @@ const dispatchSetGPS = (dispatch, init=false) => {
       const {latitude, longitude} = coords;
       dispatch(actions.setGPS(coords));
       if(init){
-        actions.initGeoRadius(10, latitude, longitude);
+        dispatch(actions.initGeoRadius(10, latitude, longitude));
       } else {
         actions.updateGeoRadius(10, latitude, longitude);
       }

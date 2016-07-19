@@ -55,7 +55,6 @@ export default React => {
     );
 
     const handleAddGym = () => {
-      //
       return (
         <AddHow 
           hereAction={() => {
@@ -70,6 +69,21 @@ export default React => {
       );
     };
 
+    const handleAddPokestop = () => {
+      return (
+        <AddHow 
+          hereAction={() => {
+            pokestopToAdd(true);
+            setAddLocation(playerLat, playerLong);
+            setAddLocationSubmit();
+          }} 
+          dropPinAction={() => {
+            pokestopToAdd(true);
+            setAddLocationState(C.ADD_LOCATION_TO_MAP)
+          }}/>
+      );
+    };
+
     const handleLocationSubmit = () => (
       <AddConfirm close={() => closeAddLocation()}/>
     );
@@ -79,7 +93,7 @@ export default React => {
       [C.ADD_LOCATION_POKEMON_SELECT]: handlePokemonSelect(),
       [C.ADD_LOCATION_POKEMON_CONFIRM]: handlePokemonConfirm(),
       [C.ADD_LOCATION_GYM]: handleAddGym(),
-      [C.ADD_LOCATION_POKESTOP]: handleLocationHow(),
+      [C.ADD_LOCATION_POKESTOP]: handleAddPokestop(),
       [C.ADD_LOCATION_HOW]: handleLocationHow(),
       [C.ADD_LOCATION_SUBMIT]: handleLocationSubmit(),
     }

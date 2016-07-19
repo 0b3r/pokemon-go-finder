@@ -250,6 +250,9 @@ export const setAddLocationSubmit = () => (dispatch, getState) => {
   else if(state.gym){
     saveLocation(C.TYPEOF_GYM, user.uid, lat, long);
   }
+  else if(state.pokestop){
+    saveLocation(C.TYPEOF_POKESTOP, user.uid, lat, long);
+  }
 
   dispatch({
     type: C.UPDATE_ADD_LOCATION_STATE,
@@ -278,6 +281,13 @@ export const pokestopToAdd = (pokestop) => ({
 export const setAddLocation = (lat, long) => ({
   type: C.ADD_LOCATION_LATLNG,
   payload: { lat, long }
+});
+
+export const setLocationSuggestions = (suggestions) => ({
+  type: C.SET_LOCATION_SUGGESTIONS,
+  payload: {
+    suggestions
+  }
 });
 
 

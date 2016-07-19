@@ -1,0 +1,282 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+@import '~_assets/lib/bourbon/bourbon';
+@import '~_assets/lib/neat/neat';
+
+html, 
+body, 
+#root, 
+.map-container, 
+.map, 
+.add-overlay-modal,
+.add-overlay,
+.add-overlay-wrapper {
+  @include size(100%);
+  font-family: 'Roboto', sans-serif;
+}
+
+.map-container{
+  overflow: hidden;
+}
+
+.map-container,
+.top-bar,
+.map, 
+.add-overlay,
+.add-overlay-modal,
+.add-overlay-wrapper {
+  top: 0;
+  left: 0;
+}
+
+.top-bar,
+.map,
+.add-overlay,
+.add-overlay-modal,
+.add-overlay-wrapper {
+  position: absolute;
+}
+
+.map-container{
+  position: relative;
+}
+
+/* Start TopBar */
+.top-bar {
+  z-index: 10;
+  width: 100%;
+}
+.topActionBtn button {
+  background-color: #23CBA8 !important;
+}
+.pokemon-search-wrapper {
+  width: 50%;
+  @include position(absolute, 10px null null 25%);
+}
+.pokemon-search{
+  @include size(100% 50px);
+}
+/* End TopBar */
+
+.map {
+  z-index: 5;
+}
+
+
+/* Start Overlay */
+
+.add-overlay{
+  z-index: 7;
+}
+
+.add-overlay-modal{
+  @include linear-gradient(to bottom right, #A3DA96, #23CBA8, $fallback: #A3DA96);
+  opacity: .85;
+}
+
+.add-location-wrapper{
+  @include position(absolute, 30% null null null)
+  min-height: 100px;
+  @include media(max-width 600px){
+    width: 90%;
+    left: 5%;
+  }
+  @include media(min-width 600px max-width 700px){
+    width: 60%;
+    left: 5%;
+  }
+  @include media(min-width 700px max-width 1000px){
+    width: 50%;
+    left: 15%;
+  }
+  @include media(min-width 1000px){
+    width: 50%;
+    left: 25%;
+  }
+}
+
+.professor-willow{
+  @include size(250px 450px);
+  @include position(absolute);
+
+  @include media(max-width 600px){
+    bottom: -200px;
+    right: 0;
+  }
+
+  @include media(min-width 600px){
+    top: 10%;
+    right: 0;
+  }
+
+}
+
+/*.add-location-wrapper{
+  width: 620px;
+  height: auto;
+  position: absolute;
+  top: 15%;
+  right: 300px;
+  background: #ededed;
+  padding: 10px;
+  font-size: 18px;
+}*/
+
+/* End Overlay */
+
+
+
+
+
+
+
+
+
+/* REFACTOR */
+
+
+
+
+
+
+
+
+.add-stage-2-pokemon-list{
+  height: 500px;
+  overflow: auto;
+}
+
+
+/*
+html, body, #root, .main-container, .container, .home-map-container {
+  width: 100%;
+  height: 100%;
+}
+.main-nav{
+  position: absolute;
+  top: 0;
+  z-index: 100;
+}
+
+.route-container{
+  position: absolute;
+  top: 0;
+}
+
+.home-map-container {
+  position: relative;
+}
+.map-controls{
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  width: 100%;
+}
+
+.container{
+  margin: 0;
+  padding: 0;
+}
+
+.add-overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 255;
+}
+.add-overlay-modal{
+  position: absolute;
+  background: #CCC;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .85;
+}
+.add-overlay-wrapper{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+.professor-willow{
+  width: 250px;
+  height: 450px;
+  position: absolute;
+  top: 25%;
+  right: 0;
+}
+
+.add-location-wrapper{
+  width: 620px;
+  height: auto;
+  position: absolute;
+  top: 15%;
+  right: 300px;
+  background: #ededed;
+  padding: 10px;
+  font-size: 18px;
+}
+.add-stage-2-pokemon-list{
+  height: 500px;
+  overflow: auto;
+}
+
+.pokemon {
+  margin: 0;
+  padding: 0;
+  float: left;
+  box-sizing: border-box;
+}
+
+.pokemon:hover {
+  border: 3px solid green;
+}
+
+.addLocationBubble {
+  position:relative;
+  padding: 5px;
+  width: 100px;
+  border:5px solid #2e6da4;
+  background:#fff;
+  border-radius:10px;
+}
+.addLocationBubble:before {
+  content:"";
+  position:absolute;
+  bottom:-52px;
+  left:0px; 
+  border-width:50px 46px 0;
+  border-style:solid;
+  border-color:#2e6da4 transparent;
+  display:block;
+  width:0;
+}*/
+
+/*
+.addLocationBubble:after {
+  content:"";
+  position:absolute;
+  bottom:-44px;
+  left:10px;
+  border-width:45px 36px 0;
+  border-style:solid;
+  border-color:#fff transparent;
+  display:block;
+  width:0;
+}*/
+
+
+
+
+
+
+
+
+
+

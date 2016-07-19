@@ -23,16 +23,7 @@ export default React => {
         />
       );
     });
-
-    // const Pokedex = pokemonList.map((p,index) => (
-    //   <Pokemon 
-    //     key={index} 
-    //     index={index} 
-    //     handler={handler}
-    //     pokemon={p}
-    //   />
-    // ));
-
+    
     return (
       <div className="add-stage-2">
         <span>

@@ -3,11 +3,18 @@
   "version": "0.1.0",
   "description": "Pokemon Go Finder Application",
   "main": "index.js",
-  "scripts": {
-    "start": "node_modules/.bin/babel-node devServer.js",
+  "scripts": { 
+    "clean": "rimraf public",
+    "build:webpack": "webpack --config webpack.config.prod.js",
+    "build": "npm run clean && npm run build:webpack",
+    "startWebpack": "webpack-dev-server --content-base src",
+    "start": "NODE_PATH='src' node_modules/.bin/babel-node devServer.js",
+    "debug": "NODE_PATH='src' echo 'Nothing? `npm install -g iron-node`' && iron-node source/debug.js",
     "lint": "eslint src",
-    "test": "NODE_PATH='src' node_modules/.bin/babel-node src/test/index.js | tap-spec",
-    "watch:test": "watch 'clear && npm run test -s' src"
+    "pretest": "npm run lint",
+    "test": "NODE_PATH='src' babel-node src/test/index.js",
+    "watch": "watch 'clear && npm run test -s' src",
+    "update": "updtr"
   },
   "repository": {
     "type": "git",
@@ -35,6 +42,7 @@
     "google-map-react": "^0.15.1",
     "history": "^3.0.0",
     "lodash": "^4.13.1",
+    "material-ui": "^0.15.2",
     "node-uuid": "^1.4.7",
     "react": "^15.2.0",
     "react-dom": "^15.2.0",
@@ -42,6 +50,7 @@
     "react-redux": "^4.4.5",
     "react-router": "^2.5.2",
     "react-router-redux": "^4.0.5",
+    "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0"
@@ -63,8 +72,13 @@
     "eslint-plugin-react": "^5.2.2",
     "express": "^4.14.0",
     "file-loader": "^0.9.0",
+    "html-webpack-plugin": "^2.22.0",
+    "node-sass": "^3.8.0",
     "postcss": "^5.1.0",
+    "raw-loader": "^0.5.1",
     "react-addons-test-utils": "^15.2.0",
+    "rimraf": "^2.5.3",
+    "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.0",

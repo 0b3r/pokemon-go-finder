@@ -1,14 +1,14 @@
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
-
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import * as services from './services';
 import * as actions from './actions';
 import configureStore from './store';
 import createRoot from './components/Root';
-import './assets/index.css';
-import './assets/pokemon.css';
+import './assets/index.scss';
 
+injectTapEventPlugin();
 
 const store = configureStore();
 const Root = createRoot(React);

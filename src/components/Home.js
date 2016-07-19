@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import createTopBar from './TopBar';
 import createMap from './Map/Map';
 import createAddOverlay from './AddOverlay/';
 import * as actions from '../actions';
@@ -6,7 +7,9 @@ import * as actions from '../actions';
 
 export default React => {
 
+  const TopBar = createTopBar(React);
   const Map = createMap(React);
+  
   const AddOverlay = createAddOverlay(React);
 
   const Home = ({ 
@@ -16,7 +19,8 @@ export default React => {
   }) => {
 
     return (
-      <div className="home-map-container">
+      <div className="map-container">
+        <TopBar />
         <Map {...gps} {...map} 
           locationsInRange={locationsInRange}
           pokemonDB={pokemonDB}

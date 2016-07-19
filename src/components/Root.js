@@ -1,6 +1,7 @@
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import C from '../constants';
 import createMain from './Main';
@@ -18,12 +19,12 @@ export default React => {
 
     return (
       <Provider store={store}>
-         <Router history={history}>
-           <Route path={C.ROOT_PATH} component={ Main }>
-             <IndexRoute component={ Home } /> 
-           </Route>
-         </Router>
-       </Provider>
+        <MuiThemeProvider>
+          <Router history={history}>
+            <Route path={C.ROOT_PATH} component={ Home } />
+          </Router>
+        </MuiThemeProvider>
+      </Provider>
     );
   }
 

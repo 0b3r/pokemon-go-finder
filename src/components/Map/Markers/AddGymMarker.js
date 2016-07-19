@@ -1,12 +1,10 @@
 export default React => {
-  const gymMarkerImg = require('../../../assets/images/pokegym-80h.png');
+  const gymMarkerImg = require('../../../assets/images/gymMarker.png');
   
   const AddGymMarker = ({save}) => {
 
-
-    const baseSize = 80;
     const containerWidth = 80 + 20;
-    const containerHeight = 200 + 107;
+    const containerHeight = 90 + 107;
   
 
     const containerStyle = {
@@ -18,9 +16,10 @@ export default React => {
     };
 
     const gymMarkerStyle = {
-      width: 80,
-      height: 200,
+      width: 35,
+      height: 90,
       backgroundImage: `url(${gymMarkerImg})`,
+      marginLeft: '20px',
     };
 
     return(

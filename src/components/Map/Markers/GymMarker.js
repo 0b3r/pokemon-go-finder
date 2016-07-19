@@ -1,14 +1,10 @@
-
-
-
-
 export default React => {
-  const gymMarkerImg = require('../../../assets/images/pokegym-80h.png');
+  const gymMarkerImg = require('../../../assets/images/gymMarker.png');
   
   const GymMarker = ({index}) => {
 
-    const baseWidth = 80;
-    const baseHeight = 200;
+    const baseWidth = 35;
+    const baseHeight = 90;
 
     const gymMarkerStyle = {
       // initially any map object has left top corner at lat lng coordinates

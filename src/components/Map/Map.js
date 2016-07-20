@@ -1,4 +1,6 @@
 import GoogleMap from 'google-map-react';
+import CircularProgress from 'material-ui/CircularProgress';
+
 import createPlayerMarker from './Markers/PlayerMarker';
 import createPokemonMarker from './Markers/PokemonMarker';
 import createAddPokemonMarker from './Markers/AddPokemonMarker';
@@ -20,16 +22,39 @@ export default React => {
   const AddPokestopMarker = createAddPokestopMarker(React);
   const MapControls = createMapControls(React);
 
+  const mapOptionsCreator = maps => {
+    // next props are exposed at maps
+    // "Animation", "ControlPosition", "MapTypeControlStyle", "MapTypeId",
+    // "NavigationControlStyle", "ScaleControlStyle", "StrokePosition", "SymbolPath", "ZoomControlStyle",
+    // "DirectionsStatus", "DirectionsTravelMode", "DirectionsUnitSystem", "DistanceMatrixStatus",
+    // "DistanceMatrixElementStatus", "ElevationStatus", "GeocoderLocationType", "GeocoderStatus", "KmlLayerStatus",
+    // "MaxZoomStatus", "StreetViewStatus", "TransitMode", "TransitRoutePreference", "TravelMode", "UnitSystem"
+    return {
+      zoomControlOptions: {
+        position: maps.ControlPosition.RIGHT_CENTER
+      },
+      mapTypeControlOptions: {
+        position: maps.ControlPosition.TOP_LEFT
+      },
+      mapTypeControl: true
+    };
+  }
+
   const Map = ({ 
-    lat, long, init, playerIcon, defaultZoom, locationsInRange, pokemonDB,
+    lat, long, init, defaultZoom, locationsInRange, pokemonDB,
     centerPlayer, setMap, openAddLocation, addLocation, setAddLocation,
     setAddLocationState, setAddLocationSubmit
   }) => {
 
+    const _loadingStyle = {
+      position: 'absolute',
+      left: '50%',
+      top: '50%'
+    };
     
 
     if(!init){
-      return <h3>Loading....</h3>
+      return <CircularProgress style={_loadingStyle} />
     }
 
     const InRange = Object.keys(locationsInRange).map((key) => {
@@ -117,6 +142,7 @@ export default React => {
         <GoogleMap
           defaultCenter={{lat, lng: long}}
           defaultZoom={defaultZoom}
+          options={mapOptionsCreator}
           onGoogleApiLoaded={setMap}
           yesIWantToUseGoogleMapApiInternals
           onClick={addLocationMarker}
@@ -128,7 +154,7 @@ export default React => {
             InRange : 
             AddPokemonGymStop()
           }
-          <PlayerMarker playerIcon={playerIcon} lat={lat} lng={long} />
+          <PlayerMarker lat={lat} lng={long} />
         </GoogleMap>
         
       </div>

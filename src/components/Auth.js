@@ -1,34 +1,67 @@
 import { connect } from 'react-redux';
+import Account from 'material-ui/svg-icons/action/account-circle';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+
+
 import * as actions from '../actions';
 import C from '../constants';
 
 export default React => {
 
-  const Auth = ({status, displayName, openAuth, logoutUser}) => {
+  const Auth = ({style, status, displayName, openAuth, logoutUser}) => {
 
-    if(status === C.AUTH_LOGGED_IN){
-      return (
-        <div>
-          <span>Logged in as {displayName}.</span>
-          {" "}<button onClick={logoutUser}>Log out</button>
-        </div>
-      );
-    }
+    const _profileButtonClass = (status === C.AUTH_ANONYMOUS) || 
+      (status === C.AUTH_AWAITING_RESPONSE) ? 
+      'anonymousProfile' : 'authenticatedProfile';
 
-    if(status === C.AUTH_AWAITING_RESPONSE){
-      return (
-        <div>
-          <button disabled>authenticating...</button>
-        </div>
-      );
-    }
+    const _menuItemStyle = {
+      cursor: 'pointer'
+    };
 
     return (
-      <div>
-        <button onClick={() => openAuth(C.AUTH_FACEBOOK_PROVIDER)}>Log in Facebook</button>
-        <button onClick={() => openAuth(C.AUTH_GOOGLE_PROVIDER)}>Log in Google</button>
-        <button onClick={() => openAuth(C.AUTH_TWITTER_PROVIDER)}>Log in Twitter</button>
-      </div>
+      <IconMenu
+        style={style}
+        iconButtonElement={
+          <FloatingActionButton 
+            className={_profileButtonClass}>
+              <Account />
+          </FloatingActionButton>
+        }
+        anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+        targetOrigin={{horizontal: 'left', vertical: 'top'}}
+        touchTapCloseDelay={100}>
+          {
+            status === C.AUTH_LOGGED_IN ?
+            <MenuItem 
+              style={_menuItemStyle} 
+              onClick={logoutUser} 
+              primaryText="Log Out" /> :
+            null
+          }
+          {
+            status === C.AUTH_ANONYMOUS ?
+            <div className="login-with-title">Login With:</div>:
+            null
+          }
+          {
+            status === C.AUTH_ANONYMOUS ?
+            <MenuItem 
+              style={_menuItemStyle} 
+              onClick={() => openAuth(C.AUTH_FACEBOOK_PROVIDER)} 
+              primaryText="Facebook" /> :
+            null
+          }
+          {
+            status === C.AUTH_ANONYMOUS ?
+            <MenuItem 
+              style={_menuItemStyle} 
+              onClick={() => openAuth(C.AUTH_GOOGLE_PROVIDER)} 
+              primaryText="Google" /> :
+            null
+          }
+      </IconMenu>
     );
   }
 

@@ -21,12 +21,6 @@ export default React => {
     setLocationSuggestions
   }) => {
 
-    const _addButtonStyle = {
-      position: 'absolute',
-      top: '10px',
-      right: '10px'
-    };
-
     const _closeButtonStyle = {
       position: 'absolute',
       top: '10px',
@@ -39,6 +33,12 @@ export default React => {
       top: '10px',
       left: '10px',
       fontSize: '48px'
+    };
+
+    const _authStyle = {
+      position: 'absolute',
+      top: '10px',
+      right: '10px'
     };
 
     const _iconButtonColor = '#4d4d4d';
@@ -78,12 +78,7 @@ export default React => {
         addLocation.addState !== C.ADD_LOCATION_SUBMIT
       )
     );
-
-    // const _autoCompleteRef = (node) => {
-    //   console.log(new new google.maps.places.Autocomplete(node.refs.searchTextField.input));
-    // }
     
-
     return (
       <div className="top-bar">
         { 
@@ -114,17 +109,7 @@ export default React => {
         }
         {
           !addLocation.addState ? 
-          <Auth /> :
-          null
-        }
-        {
-          !addLocation.addState ?
-          <FloatingActionButton 
-            className="topActionBtn"
-            style={_addButtonStyle} 
-            onClick={openAddLocation}>
-              <ContentAdd />
-          </FloatingActionButton> :
+          <Auth style={_authStyle}/> :
           null
         }
       </div>

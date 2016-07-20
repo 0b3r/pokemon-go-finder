@@ -21,8 +21,7 @@ let geoQuery;
 
 const providers = {
   [C.AUTH_FACEBOOK_PROVIDER]: () => new firebase.auth.FacebookAuthProvider(),
-  [C.AUTH_GOOGLE_PROVIDER]: () => new firebase.auth.GoogleAuthProvider(),
-  [C.AUTH_TWITTER_PROVIDER]: () => new firebase.auth.TwitterAuthProvider(),
+  [C.AUTH_GOOGLE_PROVIDER]: () => new firebase.auth.GoogleAuthProvider()
 };
 
 
@@ -165,11 +164,41 @@ export const listenToAuth = () => (dispatch, getState) => {
 export const openAuth = (platform) => {
   const createProvider = providers[platform];
   const provider = createProvider();
-  provider.addScope('email');
+  if(platform === C.AUTH_FACEBOOK_PROVIDER){
+    provider.addScope('email');
+  }else if(platform === C.AUTH_GOOGLE_PROVIDER){
+    provider.addScope('email profile');
+  }
+  
   return (dispatch) => {
     dispatch({ type: C.AUTH_OPEN });
     firebase.auth().signInWithPopup(provider).then(
       ({ user }) => {
+        if(!user.email){
+          if(user.providerData[0].email){
+            user.updateEmail(user.providerData[0].email).then(() => {
+              const feedback = {
+                type: C.FEEDBACK_DISPLAY_MESSAGE,
+                message: 'Account email address has been updated',
+                code: null
+              };
+              dispatch(snackbarFeedback(feedback));
+            }, ({code, message}) => {
+              const feedback = {
+                type: C.FEEDBACK_DISPLAY_ERROR,
+                message,
+                code
+              };
+              dispatch(snackbarFeedback(feedback));
+            });
+          }
+        }
+        const feedback = {
+          type: C.FEEDBACK_DISPLAY_MESSAGE,
+          message: 'Login Successful',
+          code: null
+        };
+        dispatch(snackbarFeedback(feedback));
         dispatch({
           type: C.AUTH_LOGIN,
           payload: {
@@ -178,13 +207,13 @@ export const openAuth = (platform) => {
         });
       }).catch(
         ({ code, message }) => {
-          dispatch({ 
-            type: C.FEEDBACK_DISPLAY_ERROR, 
-            payload: {
-              code,
-              message
-            }
-          });
+
+          const feedback = {
+            type: C.FEEDBACK_DISPLAY_ERROR,
+            message,
+            code
+          };
+          dispatch(snackbarFeedback(feedback));
           dispatch({ type: C.AUTH_LOGOUT });
       });
   }
@@ -194,37 +223,61 @@ export const logoutUser = () => {
   return (dispatch) => {
     dispatch({ type: C.AUTH_LOGOUT });
     firebase.auth().signOut().then(function() {
-      const message = 'You have been logged out successfully';
-      const code = null;
-      dispatch({ 
-        type: C.FEEDBACK_DISPLAY_MESSAGE, 
-        payload: {
-          message,
-          code
-        }
-      });
+      const feedback = {
+        type: C.FEEDBACK_DISPLAY_MESSAGE,
+        message: 'You have been logged out successfully',
+        code: null
+      };
+      dispatch(snackbarFeedback(feedback));
     }, function(error) {
-      const message = 'Something went wrong while logging you out';
-      const code = '10000';
-      dispatch({ 
-        type: C.FEEDBACK_DISPLAY_ERROR, 
-        payload: {
-          code,
-          message
-        }
-      });
+      const feedback = {
+        type: C.FEEDBACK_DISPLAY_ERROR,
+        message: 'Something went wrong while logging you out',
+        code: '10000'
+      };
+      dispatch(snackbarFeedback(feedback));
     });
   };
 };
 
-export const openAddLocation = () => (
-  {
-    type:C.ADD_LOCATION_OPEN,
+export const snackbarFeedback = ({
+  type, message, code
+}) => (dispatch, getState) => {
+  dispatch({ 
+    type, 
     payload: {
-      addState: C.ADD_LOCATION_START
+      code,
+      message
     }
+  });
+};
+
+export const snackbarFeedbackDismiss = (id) => ({ 
+  type: C.FEEDBACK_DISMISS, 
+  payload: {
+    id
   }
-);
+});
+
+
+export const openAddLocation = () => (dispatch, getState) => {
+  if(getState().auth.status === C.AUTH_ANONYMOUS){
+    const feedback = {
+      type: C.FEEDBACK_DISPLAY_ERROR,
+      message: 'You must be logged in to add locations!',
+      code: '11000'
+    };
+    dispatch(snackbarFeedback(feedback));
+  } else {
+    dispatch({
+      type:C.ADD_LOCATION_OPEN,
+      payload: {
+        addState: C.ADD_LOCATION_START
+      }
+    });
+  }
+};
+
 export const closeAddLocation = () => (
   {
     type:C.ADD_LOCATION_CLOSE,

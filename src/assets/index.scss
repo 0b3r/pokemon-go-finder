@@ -30,6 +30,7 @@ body,
 }
 
 .top-bar,
+.bottom-bar,
 .map,
 .add-overlay,
 .add-overlay-modal,
@@ -46,17 +47,61 @@ body,
   z-index: 10;
   width: 100%;
 }
+.login-with-title{
+  @include size(100% null);
+  background: #23CBA8;
+  color: #ededed;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px;
+}
+
+.anonymousProfile button {
+  background-color: #999 !important;
+}
+.search-wrapper {
+  @include media(max-width 600px){
+    width: 80%;
+    @include position(absolute, 50px null null 10px);  
+  }
+  @include media(min-width 600px max-width 1000px){
+    width: 60%;
+    @include position(absolute, 10px null null 20%);  
+  }
+  @include media(min-width 1000px){
+    width: 50%;
+    @include position(absolute, 10px null null 25%);  
+  }
+}
+.search-autocomplete{
+  padding: 5px;
+  display: inline-block;
+  @include media(max-width 720px){
+    width: 90%;
+  }
+  @include media(min-width 720px max-width 1000px){
+    width: 93%;
+  }
+  @include media(min-width 1000px){
+    width: 95%;
+  }
+}
+.search-options{
+  border: 1px solid red;
+}
+/* End TopBar */
+
+/* Start BottomBar */
+.bottom-bar {
+  z-index: 255;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}
 .topActionBtn button {
   background-color: #23CBA8 !important;
 }
-.pokemon-search-wrapper {
-  width: 50%;
-  @include position(absolute, 10px null null 25%);
-}
-.pokemon-search{
-  @include size(100% 50px);
-}
-/* End TopBar */
+/* End BottomBar */
 
 .map {
   z-index: 5;

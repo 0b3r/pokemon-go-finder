@@ -17,7 +17,8 @@ const locationsRef = database.ref('locations');
 const locationInfoRef = database.ref('locationInfo');
 const locationsGeo = new GeoFire(locationsRef);
 
-let geoQuery;
+let geoQuery = null;
+let radiusCircle = null;
 
 const providers = {
   [C.AUTH_FACEBOOK_PROVIDER]: () => new firebase.auth.FacebookAuthProvider(),
@@ -37,26 +38,44 @@ export const getPokemon = () => (dispatch) => {
   });
 };
 
-export const initGeoRadius = (radius, lat, long) => (dispatch) => {
-  geoQuery = locationsGeo.query({
-    center: [lat,long],
-    radius
-  });
+export const geoRadius = (radius, lat, long) => (dispatch) => {
 
-  geoQuery.on("key_entered", function(key, [lat, long]) {
-    locationInfoRef.child(key).on('value', function(snapshot){
-      const item = {
-        [key]: Object.assign({}, {lat, long}, snapshot.val())
-      };
-      dispatch({type:C.ADD_IN_RANGE, payload: item});
+  if(!geoQuery){
+    geoQuery = locationsGeo.query({
+      center: [lat,long],
+      radius
     });
+  
+    geoQuery.on("key_entered", function(key, [lat, long]) {
+      locationInfoRef.child(key).on('value', function(snapshot){
+        const item = {
+          [key]: Object.assign({}, {lat, long}, snapshot.val())
+        };
+        dispatch({type:C.ADD_IN_RANGE, payload: item});
+      });
+    });
+    geoQuery.on("key_exited", function(key, [lat, long]) {
+      locationInfoRef.child(key).on('value', function(snapshot){
+        dispatch({type:C.REMOVE_IN_RANGE, payload:{key}});
+      });
+    });
+  } else {
+    geoQuery.updateCriteria({
+      center: [lat,long],
+      radius
+    });
+  }
+};
+
+export const updateGeoRadius = (radius) => {
+  geoQuery.updateCriteria({
+    radius
   });
 };
 
-export const updateGeoRadius = (radius, lat, long) => {
+export const updateGeoLocation = (lat, long) => {
   geoQuery.updateCriteria({
-    center: [lat,long],
-    radius
+    center: [lat,long]
   });
 };
 
@@ -102,46 +121,47 @@ export const saveLocation = (type, uid, lat, long, id = null) => {
   
 // }
 
-export const setGPS = ({ 
-  accuracy, 
-  altitude, 
-  altitudeAccuracy, 
-  heading, 
-  latitude, 
-  longitude, 
-  speed
-}) => ({
+export const setGPS = (gps) => ({
   type: C.SET_GPS, 
-  payload: {
-    accuracy, 
-    altitude, 
-    altitudeAccuracy, 
-    heading, 
-    lat: latitude, 
-    long: longitude, 
-    speed
-  }
+  payload: {...gps}
 });
 
-export const setMapCenter = (lat, long) => (dispatch, getState) => {
-  const {map:{map:{map}}} = getState();
-  map.setCenter(new google.maps.LatLng(lat, long));
-  map.setZoom(C.GOOGLE_MAPS_DEFAULT_ZOOM);
-  dispatch({
-    type: C.SET_MAP_CENTER, 
-    payload: {
-      center: {
-        lat,
-        long
+export const setMapCenter = (lat, long, zoom = C.GOOGLE_MAPS_DEFAULT_ZOOM) => 
+  (dispatch, getState) => {
+    const { map } = getState().map.map;
+    map.setCenter(new google.maps.LatLng(lat, long));
+    map.setZoom(zoom);
+    dispatch({
+      type: C.SET_MAP_CENTER, 
+      payload: {
+        center: {
+          lat,
+          long
+        }
       }
-    }
-  });
+    });
 };
 
-export const setMap = (map) => ({
-  type: C.SET_MAP, 
-  payload: { map }
-});
+export const setMap = (map) => (dispatch, getState) => {
+  const {lat, long} = getState().gps;
+  const { radius } = getState().search;
+  console.log(lat, long);
+  const curMap = map.map;
+  radiusCircle = new google.maps.Circle({
+    strokeColor: '#0B3AF9',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: 'transparent',
+    map: curMap,
+    center: {lat, lng: long},
+    radius: radius * 1000
+  });
+
+  dispatch({
+    type: C.SET_MAP, 
+    payload: { map }
+  });
+};
 
 export const listenToAuth = () => (dispatch, getState) => {
   dispatch({ type: C.AUTH_OPEN });
@@ -342,6 +362,117 @@ export const setLocationSuggestions = (suggestions) => ({
     suggestions
   }
 });
+
+export const setSearchBy = (by) => ({
+  type: C.SET_SEARCH_BY,
+  payload: { by }
+});
+
+export const setSearchRadius = (radius) => (dispatch) =>{
+  updateGeoRadius(radius);
+  radiusCircle.setRadius(radius * 1000);
+  dispatch({
+    type: C.SET_SEARCH_RADIUS,
+    payload: { radius }
+  });
+};
+
+export const setSearchTerm = (term) => ({
+  type: C.SET_SEARCH_TERM,
+  payload: { term }
+});
+
+export const setSearchFilters = (filters) => ({
+  type: C.SET_SEARCH_FILTERS,
+  payload: { filters }
+});
+
+export const spoofGPS = (lat, long) => (dispatch) => {
+  const spoof = true;
+  radiusCircle.setCenter(new google.maps.LatLng(lat,long));
+  dispatch(setMapCenter(lat, long, 10));
+  dispatch(setGPS({lat, long, spoof}));
+  updateGeoLocation(lat, long);
+};
+
+export const unSpoofGPS = () => (dispatch) => {
+  const spoof = false;
+  getDeviceLocation(data => {
+    radiusCircle.setCenter(new google.maps.LatLng(data.lat,data.long));
+    updateGeoLocation(data.lat, data.long);
+    dispatch(setGPS({...data, spoof}));
+    dispatch(setMapCenter(data.lat, data.long, 10));
+  });
+};
+
+export const deviceGPS = () => (dispatch, getState) => {
+  const { radius } = getState().search;
+  getDeviceLocation(data => {
+    dispatch(geoRadius(radius, data.lat, data.long));
+    dispatch(setGPS(data));
+  });
+};
+
+
+export const setGPSLocation = () => (dispatch, getState) => {
+  let { spoof } = getState().gps;
+  const { radius } = getState().search;
+  if(!spoof){
+    dispatch(deviceGPS());
+  }
+};
+
+export const getDeviceLocation = (callback) => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      ({coords}) => {
+        const {latitude, longitude, ...rest} = coords;
+        const locationData = {
+          lat: latitude,
+          long: longitude,
+          ...rest
+        };
+        callback(locationData);
+      }
+    );
+  }
+}
+
+
+export const listenToLocation = () => (dispatch, getState) => {
+  dispatch(setGPSLocation());
+  setInterval(() => dispatch(setGPSLocation()), C.GPS_REFRESH_RATE);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

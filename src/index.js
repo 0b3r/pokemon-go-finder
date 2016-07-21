@@ -14,7 +14,8 @@ const store = configureStore();
 const Root = createRoot(React);
 
 store.dispatch(actions.listenToAuth());
-services.listenToGPS(store.dispatch);
+store.dispatch(actions.listenToLocation())
+//services.listenToGPS(store.dispatch, store.getState);
 
 // actions.testFirebaseDB();
 // actions.storePokemonLocation();

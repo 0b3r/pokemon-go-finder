@@ -8,6 +8,7 @@ import feedback from './feedback';
 import addLocation from './addLocation';
 import colors from './colors';
 import locationSuggestions from './locationSuggestions';
+import search from './search';
 
 export default Object.assign({},
   path,
@@ -19,5 +20,6 @@ export default Object.assign({},
   addLocation, 
   locationsInRange,
   locationSuggestions,
-  colors
+  colors,
+  search
 );

@@ -16,9 +16,10 @@ export default React => {
   const SearchBar = createSearchBar(React);
 
   const TopBar = ({ 
-    addLocation, pokemonDB, locationSuggestions,
+    addLocation, pokemonDB, locationSuggestions, search, map,
     openAddLocation, closeAddLocation, setAddLocationState,
-    setLocationSuggestions
+    setLocationSuggestions, setSearchBy, setSearchRadius, setSearchTerm,
+    setSearchFilters, spoofGPS, unSpoofGPS, snackbarFeedback
   }) => {
 
     const _closeButtonStyle = {
@@ -102,6 +103,15 @@ export default React => {
         {
           !addLocation.addState ? 
           <SearchBar 
+            {...search}
+            snackbarFeedback={snackbarFeedback}
+            spoofGPS={spoofGPS}
+            unSpoofGPS={unSpoofGPS}
+            map={map}
+            setSearchFilters={setSearchFilters}
+            setSearchTerm={setSearchTerm}
+            setSearchRadius={setSearchRadius}
+            setSearchBy={setSearchBy}
             suggestions={locationSuggestions}
             setSuggestions={setLocationSuggestions} 
             pokemonDB={pokemonDB} /> :
@@ -117,11 +127,15 @@ export default React => {
 
   };
 
-  const _mapStateToProps = ({ addLocation, pokemon, locationSuggestions }) => (
+  const _mapStateToProps = ({ 
+    addLocation, pokemon, locationSuggestions, search, map
+  }) => (
     { 
       addLocation,
       pokemonDB: pokemon,
-      locationSuggestions
+      locationSuggestions,
+      search,
+      map
     }
   );
 

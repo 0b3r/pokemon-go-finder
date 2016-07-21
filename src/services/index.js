@@ -1,24 +1,32 @@
 import * as actions from '../actions';
 import C from '../constants';
 
-const dispatchSetGPS = (dispatch, init=false) => {
+const dispatchSetGPS = (dispatch, getState, init=false) => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(({coords}) => {
-      const {latitude, longitude} = coords;
-      dispatch(actions.setGPS(coords));
-      if(init){
-        dispatch(actions.initGeoRadius(10, latitude, longitude));
+      const { radius } = getState().search;
+      const { spoof, lat, long } = getState().gps;
+      let {latitude, longitude} = coords;
+      if(spoof){
+        latitude = lat;
+        longitude = long;
       } else {
-        actions.updateGeoRadius(10, latitude, longitude);
+        dispatch(actions.setGPS(coords));
+      }
+      
+      if(init){
+        dispatch(actions.initGeoRadius(radius, latitude, longitude));
+      } else {
+        actions.updateGeo(radius, latitude, longitude);
       }
       
     });
   }
 };
 
-export const listenToGPS = (dispatch) => {
-  dispatchSetGPS(dispatch, true);
-  setInterval(() => dispatchSetGPS(dispatch), C.GPS_REFRESH_RATE);
+export const listenToGPS = (dispatch, getState) => {
+  dispatchSetGPS(dispatch, getState, true);
+  setInterval(() => dispatchSetGPS(dispatch, getState), C.GPS_REFRESH_RATE);
 }
 
 

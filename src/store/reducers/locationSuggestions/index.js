@@ -5,7 +5,7 @@ const initialState = ['Current Location'];
 
 const reducers = {
   [C.SET_LOCATION_SUGGESTIONS] : (state, {payload:{suggestions}}) => (
-    ['Current Location'].concat(suggestions)
+    [{description:'Current Location'}].concat(suggestions)
   ),
 };
 

@@ -8,6 +8,7 @@ import feedback from './feedback';
 import addLocation from './addLocation';
 import locationsInRange from './locationsInRange';
 import locationSuggestions from './locationSuggestions';
+import search from './search';
 
 import pokemon from './pokemon';
 
@@ -20,6 +21,7 @@ export default combineReducers({
   pokemon,
   locationsInRange,
   locationSuggestions,
+  search,
   routing: routerReducer
 });
 

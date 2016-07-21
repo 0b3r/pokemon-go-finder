@@ -25,10 +25,14 @@ export default React => {
   const mapOptionsCreator = maps => {
     // next props are exposed at maps
     // "Animation", "ControlPosition", "MapTypeControlStyle", "MapTypeId",
-    // "NavigationControlStyle", "ScaleControlStyle", "StrokePosition", "SymbolPath", "ZoomControlStyle",
-    // "DirectionsStatus", "DirectionsTravelMode", "DirectionsUnitSystem", "DistanceMatrixStatus",
-    // "DistanceMatrixElementStatus", "ElevationStatus", "GeocoderLocationType", "GeocoderStatus", "KmlLayerStatus",
-    // "MaxZoomStatus", "StreetViewStatus", "TransitMode", "TransitRoutePreference", "TravelMode", "UnitSystem"
+    // "NavigationControlStyle", "ScaleControlStyle", "StrokePosition", 
+    // "SymbolPath", "ZoomControlStyle",
+    // "DirectionsStatus", "DirectionsTravelMode", "DirectionsUnitSystem", 
+    // "DistanceMatrixStatus",
+    // "DistanceMatrixElementStatus", "ElevationStatus", 
+    // "GeocoderLocationType", "GeocoderStatus", "KmlLayerStatus",
+    // "MaxZoomStatus", "StreetViewStatus", "TransitMode", 
+    // "TransitRoutePreference", "TravelMode", "UnitSystem"
     return {
       zoomControlOptions: {
         position: maps.ControlPosition.RIGHT_CENTER
@@ -41,7 +45,7 @@ export default React => {
   }
 
   const Map = ({ 
-    lat, long, init, defaultZoom, locationsInRange, pokemonDB,
+    lat, long, init, search, defaultZoom, locationsInRange, pokemonDB,
     centerPlayer, setMap, openAddLocation, addLocation, setAddLocation,
     setAddLocationState, setAddLocationSubmit
   }) => {
@@ -57,7 +61,20 @@ export default React => {
       return <CircularProgress style={_loadingStyle} />
     }
 
-    const InRange = Object.keys(locationsInRange).map((key) => {
+    const InRange = Object.keys(locationsInRange).filter((key) => {
+      const {type, id} = locationsInRange[key];
+      if(search.filters.indexOf(type) > -1){
+        if(
+          (search.by === C.SEARCH_BY_POKEMON) && 
+          (type === C.TYPEOF_POKEMON) &&
+          search.term != ''
+        ){
+          return pokemonDB[id].name === search.term
+        }
+        return true;
+      }
+      return false;
+    }).map((key) => {
       const {type, lat, long, id} = locationsInRange[key];
       if(type === C.TYPEOF_POKEMON){
         const {index} = pokemonDB[id];

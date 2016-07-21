@@ -8,8 +8,7 @@ import MyLocation from 'material-ui/svg-icons/maps/my-location';
 
 export default React => {
 
-
-  const TopBar = ({ addLocation, openAddLocation }) => {
+  const Component = ({ lat, long, gps, addLocation, openAddLocation, setMapCenter }) => {
 
     const _addButtonStyle = {
       position: 'absolute',
@@ -21,6 +20,12 @@ export default React => {
       position: 'absolute',
       bottom: '10px',
       left: '10px'
+    };
+
+    const _centerPlayer = () => {
+      if(lat && long){
+        setMapCenter(lat, long);
+      }
     };
 
     return (
@@ -40,7 +45,7 @@ export default React => {
           <FloatingActionButton 
             style={_myLocationButtonStyle} 
             mini={true}
-            onClick={openAddLocation}>
+            onClick={_centerPlayer}>
               <MyLocation />
           </FloatingActionButton> :
           null
@@ -50,10 +55,10 @@ export default React => {
 
   };
 
-  const _mapStateToProps = ({ addLocation }) => ({ addLocation });
+  const _mapStateToProps = ({ addLocation, gps }) => ({ addLocation, ...gps});
 
   return connect(
     _mapStateToProps,
     actions
-  )(TopBar);
+  )(Component);
 };

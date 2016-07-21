@@ -16,7 +16,7 @@ export default React => {
   const AddOverlay = createAddOverlay(React);
 
   const Home = ({ 
-    gps, map, locationsInRange, pokemonDB, photoURL, setMapCenter, 
+    gps, map, search, locationsInRange, pokemonDB, photoURL, setMapCenter, 
     setMap, addLocation, openAddLocation, closeAddLocation, setAddLocation,
     setAddLocationState, setAddLocationSubmit, feedback, snackbarFeedbackDismiss
   }) => {
@@ -54,6 +54,7 @@ export default React => {
           setAddLocation={setAddLocation}
           setAddLocationState={setAddLocationState}
           setAddLocationSubmit={setAddLocationSubmit}
+          search={search}
         />
         <AddOverlay 
           active={addLocation.active}
@@ -70,7 +71,7 @@ export default React => {
   }
 
   const mapStateToProps = ({ 
-    gps, map, pokemon, locationsInRange, addLocation, feedback
+    gps, map, pokemon, locationsInRange, addLocation, feedback, search
   }) => {
     return {
       gps,
@@ -78,14 +79,8 @@ export default React => {
       addLocation, 
       locationsInRange, 
       feedback,
+      search,
       pokemonDB: pokemon
-    };
-  }
-
-  const mapDispatchToProps = (dispatch) => {
-    return {
-      centerPlayer: (lat, long) => dispatch(actions.setMapCenter(lat, long)),
-      setMap: (map) => dispatch(actions.setMap(map)),
     };
   }
 

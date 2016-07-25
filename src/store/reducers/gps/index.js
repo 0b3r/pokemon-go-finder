@@ -15,7 +15,8 @@ const reducers = {
     heading,
     lat,
     long,
-    speed
+    speed, 
+    spoof
   }}) => (
   Object.assign({}, state,
     {
@@ -26,7 +27,8 @@ const reducers = {
       lat,
       long,
       speed,
-      init: true
+      init: true,
+      spoof
     }
   ))
 };

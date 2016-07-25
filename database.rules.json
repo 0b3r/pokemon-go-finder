@@ -1,0 +1,20 @@
+{
+  "rules": {
+    "pokemon": {
+      ".read": true,
+      ".write": false
+    },
+    "locationInfo": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "locations": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": "g"
+    },
+    "something": {
+      ".write": "auth != null"
+    }
+  }
+}

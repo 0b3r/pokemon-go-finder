@@ -1,0 +1,21 @@
+ <script type="text/javascript">
+
+
+var adFormat = google.maps.adsense.AdFormat.BANNER;
+//if ($(window).width() < 480) adFormat = google.maps.adsense.AdFormat.HALF_BANNER;
+
+try { // Needed as AbBlocker will cause site to fail
+    var adUnitDiv = document.createElement('div');
+    var adUnitOptions = {
+        format: adFormat,
+        position: google.maps.ControlPosition.BOTTOM_CENTER,
+        map: map,
+        visible: true,
+        publisherId: 'pub-8280569024062270'
+    }
+    var adUnit = new google.maps.adsense.AdUnit(adUnitDiv, adUnitOptions);
+}
+catch (error) {
+    // Do nothing, error probably caused by an ad blocker.
+}
+</script>

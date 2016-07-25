@@ -5,7 +5,10 @@ import locationsInRange from './locationsInRange';
 import firebase from './firebase';
 import auth from './auth';
 import feedback from './feedback';
-import addLocation from './addLocation'
+import addLocation from './addLocation';
+import colors from './colors';
+import locationSuggestions from './locationSuggestions';
+import search from './search';
 
 export default Object.assign({},
   path,
@@ -15,5 +18,8 @@ export default Object.assign({},
   auth,
   feedback,
   addLocation, 
-  locationsInRange
+  locationsInRange,
+  locationSuggestions,
+  colors,
+  search
 );

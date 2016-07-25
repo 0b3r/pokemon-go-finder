@@ -13,6 +13,7 @@ import reducer from '../utils';
 
 const initialState = {
   active: false,
+  // addState: 'ADD_LOCATION_START'
 };
 
 const reducers = {
